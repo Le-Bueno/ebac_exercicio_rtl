@@ -9,16 +9,22 @@ const Post = () => {
 
     function handleAddComment(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const newComment = new Comment(comments.length, tempComment);
-        setTempComment('');
-        setComments([...comments, newComment]);
+        if (tempComment.trim()) { 
+            const newComment = new Comment(comments.length, tempComment);
+            setComments([...comments, newComment]);
+            setTempComment(''); 
+        }
     }
 
     return (
         <div>
             <ul className={styles['post-comments']}>
                 {comments.map(({ comment, id }) => (
-                    <li className={styles['post-comment']} key={id}>
+                    <li 
+                        data-testid="comment-element" 
+                        className={styles['post-comment']} 
+                        key={id}
+                    >
                         <p className={styles['post-comment-content']}>
                             {comment}
                         </p>
@@ -26,8 +32,19 @@ const Post = () => {
                 ))}
             </ul>
             <form onSubmit={handleAddComment} className={styles['post-comments-form']}>
-                <textarea value={tempComment} onChange={e => setTempComment(e.target.value)} required className={styles['post-comments-form-textarea']} />
-                <button type="submit" className={styles['post-comments-form-button']}>
+                <textarea 
+                    data-testid="comment-textarea" 
+                    value={tempComment} 
+                    onChange={e => setTempComment(e.target.value)} 
+                    required 
+                    className={styles['post-comments-form-textarea']} 
+                    placeholder="Escreva seu comentário aqui..." 
+                />
+                <button 
+                    data-testid="comment-button" 
+                    type="submit" 
+                    className={styles['post-comments-form-button']}
+                >
                     Comentar
                 </button>
             </form>
